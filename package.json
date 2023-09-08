@@ -1,0 +1,14 @@
+{
+  "name": "ssd-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "backend": "npm start --prefix backend",
+    "frontend": "npm start --prefix frontend",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
