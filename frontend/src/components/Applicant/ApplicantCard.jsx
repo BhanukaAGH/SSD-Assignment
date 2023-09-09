@@ -2,7 +2,7 @@ import moment from 'moment'
 import React from 'react'
 import { MdDone, MdClear } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip } from 'react-tooltip'
 import { updateApplicantStatus } from '../../features/applicant/applicantSlice'
 
 const ApplicantCard = ({ applicant, setViewResume }) => {
@@ -64,7 +64,9 @@ const ApplicantCard = ({ applicant, setViewResume }) => {
         </div>
         <div className='flex space-x-2 items-end text-lg font-medium'>
           <button
-            data-tip='Reject'
+            data-tooltip-id='applicant-option'
+            data-tooltip-variant='error'
+            data-tooltip-content='Reject'
             onClick={() =>
               dispatch(
                 updateApplicantStatus({
@@ -78,7 +80,9 @@ const ApplicantCard = ({ applicant, setViewResume }) => {
             <MdClear />
           </button>
           <button
-            data-tip='Accept'
+            data-tooltip-id='applicant-option'
+            data-tooltip-variant='info'
+            data-tooltip-content='Accept'
             onClick={() =>
               dispatch(
                 updateApplicantStatus({
@@ -93,11 +97,10 @@ const ApplicantCard = ({ applicant, setViewResume }) => {
           </button>
         </div>
       </dl>
-      <ReactTooltip
+      <Tooltip
+        id='applicant-option'
         place='bottom'
-        type='dark'
-        effect='solid'
-        className='!py-1 !px-4 !rounded-md'
+        className='!block md:!hidden !py-1 !px-4 !rounded-md'
       />
     </div>
   )

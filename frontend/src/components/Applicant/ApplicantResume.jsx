@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack'
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
+import { Document, Page, pdfjs } from 'react-pdf'
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 const ApplicantResume = ({ viewResume, setViewResume }) => {
   const [numPages, setNumPages] = useState(null)
@@ -67,7 +70,7 @@ const ApplicantResume = ({ viewResume, setViewResume }) => {
             }
           >
             <Page pageNumber={pageNumber} scale={pageScale} />
-            <div className='hidden group-hover:block absolute w-full bottom-3'>
+            <div className='hidden group-hover:block absolute w-full bottom-3 z-50'>
               <div className='flex space-x-2 items-center bg-white text-black font-[Poppins] max-w-fit mx-auto shadow-lg rounded-md'>
                 <button
                   type='button'

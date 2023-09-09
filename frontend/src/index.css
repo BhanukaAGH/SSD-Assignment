@@ -71,7 +71,7 @@
   }
 
   .header-input {
-    @apply placeholder:italic rounded-lg w-full p-3 py-4 font-[Poppins] text-sm !outline-hidden !border-hidden !ring-0 shadow-xl;
+    @apply placeholder:italic rounded-lg w-full p-3 py-4 font-[Poppins] text-sm !outline-none !border-hidden !ring-0 shadow-xl;
   }
 
   .header-search-button {

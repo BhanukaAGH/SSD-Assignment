@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip } from 'react-tooltip'
 import { adminLinks, companyLinks } from '../../utils/NavLinks'
 
 const DashboardSidebar = ({ active, setActive }) => {
@@ -13,7 +13,9 @@ const DashboardSidebar = ({ active, setActive }) => {
         companyLinks.map((link) => (
           <div
             key={link.id}
-            data-tip={link.name}
+            data-tooltip-id='sidebar-link'
+            data-tooltip-variant='dark'
+            data-tooltip-content={link.name}
             className={`dashboard-link ${
               active === link.id && '!bg-black !text-white'
             }`}
@@ -28,7 +30,9 @@ const DashboardSidebar = ({ active, setActive }) => {
         adminLinks.map((link) => (
           <div
             key={link.id}
-            data-tip={link.name}
+            data-tooltip-id='sidebar-link'
+            data-tooltip-variant='dark'
+            data-tooltip-content={link.name}
             className={`dashboard-link ${
               active === link.id && '!bg-black !text-white'
             }`}
@@ -39,11 +43,10 @@ const DashboardSidebar = ({ active, setActive }) => {
           </div>
         ))}
 
-      <ReactTooltip
+      <Tooltip
+        id='sidebar-link'
         place='right'
-        type='dark'
-        effect='solid'
-        className='!block md:!hidden'
+        className='!block md:!hidden z-50'
       />
     </div>
   )
