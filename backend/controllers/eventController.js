@@ -1,68 +1,68 @@
-const Event = require('../models/Event')
-const { StatusCodes } = require('http-status-codes')
-const CustomError = require('../errors')
+const Event = require('../models/Event');
+const { StatusCodes } = require('http-status-codes');
+const CustomError = require('../errors');
 
 //! POST Event
 const createEvent = async (req, res) => {
-  req.body.company = req.user.userId
-  const event = await Event.create(req.body)
-  res.status(StatusCodes.CREATED).json(event)
-}
+  req.body.company = req.user.userId;
+  const event = await Event.create(req.body);
+  res.status(StatusCodes.CREATED).json(event);
+};
 
 //Get Events by Company ID
 const getEventsByCompanyId = async (req, res) => {
-  const events = await Event.find({ company: req.user.userId })
+  const events = await Event.find({ company: req.user.userId });
 
   if (!events) {
-    throw new CustomError.NotFoundError(`No events for company id : ${userId}`)
+    throw new CustomError.NotFoundError(`No events for company id : ${userId}`);
   }
 
-  res.status(StatusCodes.OK).json(events)
-}
+  res.status(StatusCodes.OK).json(events);
+};
 
 //! GET Event
 const getEvent = async (req, res) => {
-  const { id: eventId } = req.params
-  const event = await Event.findOne({ _id: eventId })
+  const { id: eventId } = req.params;
+  const event = await Event.findOne({ _id: eventId });
 
   if (!event) {
-    throw new CustomError.NotFoundError(`No event with id : ${eventId}`)
+    throw new CustomError.NotFoundError(`No event with id : ${eventId}`);
   }
-  res.status(StatusCodes.OK).json(event)
-}
+  res.status(StatusCodes.OK).json(event);
+};
 
 //! GET ALL Events
 const getAllEvents = async (req, res) => {
-  const events = await Event.find({})
-  res.status(StatusCodes.OK).json({ events, count: events.length })
-}
+  const events = await Event.find({});
+  res.status(StatusCodes.OK).json({ events, count: events.length });
+};
 
 //! UPDATE Event
 const updateEvent = async (req, res) => {
-  const { id: eventId } = req.params
+  const { id: eventId } = req.params;
   const event = await Event.findOneAndUpdate({ _id: eventId }, req.body, {
     new: true,
     runValidators: true,
-  })
+  });
 
   if (!event) {
-    throw new CustomError.NotFoundError(`No event with id : ${eventId}`)
+    throw new CustomError.NotFoundError(`No event with id : ${eventId}`);
   }
-  res.status(StatusCodes.OK).json(event)
-}
+  res.status(StatusCodes.OK).json(event);
+};
 
 //! DELETE Event
 const deleteEvent = async (req, res) => {
-  const { id: eventId } = req.params
-  const event = await Event.findOne({ _id: eventId })
+  const { id: eventId } = req.params;
+  const event = await Event.findOne({ _id: eventId });
 
   if (!event) {
-    throw new CustomError.NotFoundError(`No event with id : ${eventId}`)
+    throw new CustomError.NotFoundError(`No event with id : ${eventId}`);
   }
 
-  await event.remove()
-  res.status(StatusCodes.OK).json({ msg: 'Success! event removed.' })
-}
+  await event.deleteOne();
+  res.status(StatusCodes.OK).json({ msg: 'Success! event removed.' });
+};
 
 module.exports = {
   createEvent,
@@ -71,4 +71,4 @@ module.exports = {
   getAllEvents,
   updateEvent,
   deleteEvent,
-}
+};
