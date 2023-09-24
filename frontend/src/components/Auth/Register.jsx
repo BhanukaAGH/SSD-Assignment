@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { register as registerUser, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
-import { openAuth } from '../../features/ui/uiSlice'
 import { emailPattern } from '../../constants/pattern'
 
 const Register = ({ setOpenLogin }) => {
@@ -15,7 +13,6 @@ const Register = ({ setOpenLogin }) => {
     formState: { errors },
     watch,
   } = useForm()
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -31,13 +28,12 @@ const Register = ({ setOpenLogin }) => {
       toast.error(message, { theme: 'dark' })
     }
 
-    if (isSuccess || user) {
-      navigate('/')
-      dispatch(openAuth(false))
+    if (isSuccess && !isLoading && !isError && !user) {
+      window.location.href = '/'
     }
 
     dispatch(reset())
-  }, [user, isError, isSuccess, message, navigate, dispatch])
+  }, [user, isError, isLoading, isSuccess, message, dispatch])
 
   return (
     <div className='rounded-lg bg-white shadow font-[Mulish]'>

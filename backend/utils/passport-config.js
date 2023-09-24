@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local').Strategy
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const FacebookStrategy = require('passport-facebook').Strategy
 const User = require('../models/User')
+const createTokenUser = require('./createTokenUser')
 
 passport.use(
   new LocalStrategy(
@@ -85,11 +86,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   User.findById(id).then((user) => {
-    done(null, {
-      userId: user._id,
-      name: user.name,
-      role: user.role,
-      profileImg: user.photoUrl,
-    })
+    done(null, createTokenUser(user))
   })
 })

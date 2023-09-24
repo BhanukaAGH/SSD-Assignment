@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { register as registerUser, reset } from '../features/auth/authSlice'
 import { openAuth } from '../features/ui/uiSlice'
 import { toast } from 'react-toastify'
@@ -20,7 +20,6 @@ const CompanySignUp = () => {
     watch,
   } = useForm()
   const navigate = useNavigate()
-  const { state } = useLocation()
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -36,13 +35,12 @@ const CompanySignUp = () => {
       toast.error(message, { theme: 'dark' })
     }
 
-    if (isSuccess || user) {
-      navigate(state?.path || '/company/post-job')
+    if (isSuccess && !isLoading && !isError && !user) {
+      window.location.href = '/'
     }
 
     dispatch(reset())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, isError, isSuccess, message, navigate, dispatch])
+  }, [user, isError, isLoading, isSuccess, message, dispatch])
 
   return (
     <div className='grid grid-cols-8 w-screen h-screen'>

@@ -2,9 +2,10 @@ const User = require('../models/User')
 const Company = require('../models/Company')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
+const { createTokenUser } = require('../utils')
 
 //! REGISTER CONTROLLER
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   const {
     name,
     email,
@@ -60,12 +61,18 @@ const register = async (req, res) => {
     })
   }
 
-  res.status(StatusCodes.CREATED).json({ msg: 'Successfully Registered.' })
+  req.login(user, function (err) {
+    if (err) {
+      console.log('error accoured', err)
+      return next(err)
+    }
+    res.status(StatusCodes.OK).json({ user: createTokenUser(req.user) })
+  })
 }
 
 //! LOGIN CONTROLLER
 const login = async (req, res) => {
-  res.status(StatusCodes.OK).json({ msg: "'Successfully Logged.'" })
+  res.status(StatusCodes.OK).json({ user: createTokenUser(req.user) })
 }
 
 //! GET USER

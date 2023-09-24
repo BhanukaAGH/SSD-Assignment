@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { login, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
-import { openAuth } from '../../features/ui/uiSlice'
 import { emailPattern } from '../../constants/pattern'
 import GoogleLogo from '../../assets/GImage.webp'
 import FacebookLogo from '../../assets/Facebook.webp'
@@ -17,7 +16,6 @@ const Login = ({ setOpenLogin }) => {
     formState: { errors },
   } = useForm()
   const navigate = useNavigate()
-  const { state } = useLocation()
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -36,20 +34,8 @@ const Login = ({ setOpenLogin }) => {
       window.location.href = '/'
     }
 
-    if (isSuccess || user) {
-      if (user?.role === 'admin') {
-        navigate(state?.path || '/admin/dashboard')
-      } else if (user?.role === 'company') {
-        navigate(state?.path || '/company/dashboard')
-      } else {
-        navigate('/')
-      }
-      dispatch(openAuth(false))
-    }
-
     dispatch(reset())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, isError, isSuccess, message, navigate, dispatch])
+  }, [user, isError, isLoading, isSuccess, message, navigate, dispatch])
 
   return (
     <div className='rounded-lg bg-white shadow font-[Mulish]'>
