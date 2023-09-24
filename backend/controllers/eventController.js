@@ -60,7 +60,7 @@ const deleteEvent = async (req, res) => {
     throw new CustomError.NotFoundError(`No event with id : ${eventId}`)
   }
 
-  await event.remove()
+  await event.deleteOne()
   res.status(StatusCodes.OK).json({ msg: 'Success! event removed.' })
 }
 

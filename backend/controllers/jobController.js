@@ -54,7 +54,7 @@ const deleteJob = async (req, res) => {
   }
 
   await AppliedJobs.findOneAndRemove({ JobID: jobId })
-  await job.remove()
+  await job.deleteOne()
   res.status(StatusCodes.OK).json({ msg: 'Success! Job removed.' })
 }
 

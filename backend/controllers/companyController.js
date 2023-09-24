@@ -2,7 +2,7 @@ const User = require('../models/User')
 const Company = require('../models/Company')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
-const { checkPermissions, createTokenUser, createJWT } = require('../utils')
+const { checkPermissions } = require('../utils')
 
 //! GET COMPANY
 const getCompany = async (req, res) => {

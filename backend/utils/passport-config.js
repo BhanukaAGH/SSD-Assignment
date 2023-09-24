@@ -7,23 +7,22 @@ const User = require('../models/User')
 passport.use(
   new LocalStrategy(
     { usernameField: 'email', passwordField: 'password' },
-    (username, password, done) => {
-      User.findOne({ email: username }, async function (err, user) {
-        if (err) {
-          return done(err)
-        }
+    async (username, password, done) => {
+      try {
+        const user = await User.findOne({ email: username })
         if (!user) {
           return done(null, false)
         }
         if (user && (user.googleId || user.facebookId)) {
           return done(null, false)
         }
-
         if (!(await user.comparePassword(password))) {
           return done(null, false)
         }
         return done(null, user)
-      })
+      } catch (err) {
+        return done(err)
+      }
     }
   )
 )
