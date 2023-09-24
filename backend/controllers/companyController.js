@@ -50,9 +50,7 @@ const updateCompany = async (req, res) => {
 
   await company.save()
 
-  const tokenUser = createTokenUser(company)
-  const token = createJWT({ payload: tokenUser })
-  res.status(StatusCodes.CREATED).json({ user: tokenUser, token })
+  res.status(StatusCodes.OK).json({ msg: 'Updated Detatails.' })
 }
 
 module.exports = {

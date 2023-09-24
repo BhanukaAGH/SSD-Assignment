@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "backend": "npm start --prefix backend",
+    "backend": "npm run server --prefix backend",
     "frontend": "npm start --prefix frontend",
     "start": "concurrently \"npm run backend\" \"npm run frontend\""
   },

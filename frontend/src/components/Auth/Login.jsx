@@ -7,6 +7,8 @@ import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
 import { openAuth } from '../../features/ui/uiSlice'
 import { emailPattern } from '../../constants/pattern'
+import GoogleLogo from '../../assets/GImage.webp'
+import FacebookLogo from '../../assets/Facebook.webp'
 
 const Login = ({ setOpenLogin }) => {
   const {
@@ -28,6 +30,10 @@ const Login = ({ setOpenLogin }) => {
   useEffect(() => {
     if (isError) {
       toast.error(message, { theme: 'dark' })
+    }
+
+    if (isSuccess && !isLoading && !isError && !user) {
+      window.location.href = '/'
     }
 
     if (isSuccess || user) {
@@ -119,6 +125,33 @@ const Login = ({ setOpenLogin }) => {
             )}
           </button>
         </form>
+
+        <div className='relative my-2'>
+          <div className='absolute inset-0 flex items-center'>
+            <span className='w-full border-t' />
+          </div>
+          <div className='relative flex justify-center text-sm uppercase font-medium'>
+            <span className='bg-white px-2 text-muted-foreground'>OR</span>
+          </div>
+        </div>
+
+        <div className='grid grid-cols-2 gap-x-3'>
+          <a
+            href={`${process.env.REACT_APP_API_URL}/api/v1/auth/google`}
+            className='flex items-center justify-center rounded-lg border border-gray-300 text-black py-1 space-x-2 cursor-pointer'
+          >
+            <img className='w-8' alt='google' src={GoogleLogo} />
+            <span className='font-semibold'>Google</span>
+          </a>
+          <a
+            href={`${process.env.REACT_APP_API_URL}/api/v1/auth/facebook`}
+            className='flex items-center justify-center rounded-lg border border-gray-300 text-black py-1 space-x-2 cursor-pointer'
+          >
+            <img className='w-8' alt='facebook' src={FacebookLogo} />
+            <span className='font-semibold'>Facebook</span>
+          </a>
+        </div>
+
         <p className='text-sm w-full text-center mt-6 font-bold text-[#6B7E8B]'>
           If you don't have an account?
           <span

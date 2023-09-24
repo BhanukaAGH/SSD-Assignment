@@ -2,7 +2,6 @@ const User = require('../models/User')
 const Company = require('../models/Company')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
-const { createTokenUser, createJWT } = require('../utils')
 
 //! REGISTER CONTROLLER
 const register = async (req, res) => {
@@ -61,31 +60,17 @@ const register = async (req, res) => {
     })
   }
 
-  const tokenUser = createTokenUser(user)
-  const token = createJWT({ payload: tokenUser })
-  res.status(StatusCodes.CREATED).json({ user: tokenUser, token })
+  res.status(StatusCodes.CREATED).json({ msg: 'Successfully Registered.' })
 }
 
 //! LOGIN CONTROLLER
 const login = async (req, res) => {
-  const { email, password } = req.body
-  if (!email || !password) {
-    throw new CustomError.BadRequestError('Please provide email and password')
-  }
-
-  const user = await User.findOne({ email })
-  if (!user) {
-    throw new CustomError.UnauthenticatedError('Invalid Credentials')
-  }
-
-  const isPasswordCorrect = await user.comparePassword(password)
-  if (!isPasswordCorrect) {
-    throw new CustomError.UnauthenticatedError('Invalid Credentials')
-  }
-
-  const tokenUser = createTokenUser(user)
-  const token = createJWT({ payload: tokenUser })
-  res.status(StatusCodes.CREATED).json({ user: tokenUser, token })
+  res.status(StatusCodes.OK).json({ msg: "'Successfully Logged.'" })
 }
 
-module.exports = { login, register }
+//! GET USER
+const getUser = async (req, res) => {
+  res.status(StatusCodes.OK).json({ user: req.user })
+}
+
+module.exports = { login, register, getUser }

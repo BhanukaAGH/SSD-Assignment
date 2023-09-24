@@ -11,18 +11,7 @@ const api = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}/api/v1`,
 })
 
-// request
-api.interceptors.request.use(
-  (config) => {
-    config.headers.Authorization = `Bearer ${
-      JSON.parse(localStorage.getItem('user'))?.token
-    }`
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  }
-)
+api.defaults.withCredentials = true
 
 // response
 api.interceptors.response.use(

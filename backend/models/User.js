@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema(
     _company: { type: mongoose.Schema.ObjectId, ref: 'Company' },
     password: {
       type: String,
-      required: [true, 'Please provide password'],
       minlength: 6,
     },
     role: {
@@ -34,6 +33,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: 'http://www.gravatar.com/avatar/?d=mp',
     },
+    googleId: { type: String },
+    facebookId: { type: String },
   },
   { timestamps: true }
 )

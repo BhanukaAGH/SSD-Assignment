@@ -1,5 +1,6 @@
 require('dotenv').config()
 require('express-async-errors')
+require('./utils/passport-config')
 
 const express = require('express')
 const app = express()
@@ -8,6 +9,9 @@ const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
+const passport = require('passport')
 
 // database
 const connectDB = require('./db/connect')
@@ -27,9 +31,26 @@ const notFoundMiddleware = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
 
 app.use(helmet())
-app.use(cors())
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
 app.use(morgan('tiny'))
 app.use(express.json())
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    // store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 Day
+    },
+  })
+)
+
+// initialize passport
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.get('/', (req, res) => {
   res.send('<center><h1>Jobs Portal Backend</h1></center>')

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { updateUserToken } from '../auth/authSlice'
 import companyService from './companyService'
 
 const initialState = {
@@ -43,8 +42,6 @@ export const updateCompany = createAsyncThunk(
   async (companyData, thunkAPI) => {
     try {
       const response = await companyService.updateCompany(companyData)
-      localStorage.setItem('user', JSON.stringify(response))
-      thunkAPI.dispatch(updateUserToken(response))
       return response
     } catch (error) {
       const message = error.response.data.msg || error.message

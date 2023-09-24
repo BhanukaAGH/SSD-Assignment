@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Home from './pages/Home'
@@ -16,8 +16,36 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ViewJob from './components/Candidate/ViewJob'
 import ViewEvent from './components/Candidate/ViewEvent'
 import AppliedJobs from './pages/AppliedJobs'
+import { useDispatch } from 'react-redux'
+import { setUser } from './features/auth/authSlice'
+import api from './utils/api'
+import Loading from './components/Loading'
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await api.get('/auth/user')
+        dispatch(setUser(res.data.user))
+      } catch (error) {
+        console.log('User logged out')
+      }
+      setIsLoading(false)
+    }
+    getUser()
+  }, [dispatch])
+
+  if (isLoading) {
+    return (
+      <div className='h-screen'>
+        <Loading />
+      </div>
+    )
+  }
+
   return (
     <>
       <Routes>
