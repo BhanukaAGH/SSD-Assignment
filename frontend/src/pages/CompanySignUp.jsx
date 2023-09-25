@@ -9,6 +9,19 @@ import Logo from '../assets/Logo.webp'
 import BGImage from '../assets/registerBg.webp'
 import { urlPattern } from '../constants/pattern'
 import { Oval } from 'react-loader-spinner'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+
+const schema = z.object({
+  name: z
+    .string()
+    .nonempty({ message: 'Name is required' })
+    .min(3, { message: 'Name must be at least 3 characters' }),
+  email: z
+    .string()
+    .min(1, { message: 'This field has to be filled.' })
+    .email('Please enter a valid email address'),
+})
 
 const CompanySignUp = () => {
   const [imageload, setImageLoad] = useState(true)
@@ -18,7 +31,7 @@ const CompanySignUp = () => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm()
+  } = useForm({ resolver: zodResolver(schema) })
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -71,13 +84,7 @@ const CompanySignUp = () => {
               </label>
               <input
                 type='text'
-                {...register('name', {
-                  required: 'Name is required',
-                  minLength: {
-                    value: 3,
-                    message: 'Name must be at least 3 characters',
-                  },
-                })}
+                {...register('name')}
                 className='input-field'
                 placeholder='company name'
               />
@@ -94,13 +101,7 @@ const CompanySignUp = () => {
               </label>
               <input
                 type='email'
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: 'Please enter a valid email address',
-                  },
-                })}
+                {...register('email')}
                 className='input-field'
                 placeholder='company email'
               />
