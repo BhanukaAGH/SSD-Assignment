@@ -19,8 +19,21 @@ const schema = z.object({
     .min(3, { message: 'Name must be at least 3 characters' }),
   email: z
     .string()
-    .min(1, { message: 'This field has to be filled.' })
+    .min(1, { message: 'Please enter a email address' })
     .email('Please enter a valid email address'),
+  companyWebsite:z
+    .string()
+    .url('Please enter a valid url')
+    .optional(),
+  companyLocation:z
+    .string()
+    .nonempty({ message: 'Company location is required' }),
+  companyDescription: z
+    .string()
+    .nonempty({message:'Company description is required'})
+    .min(20, { message: 'Description need to have at least 20 Charters' })
+    .max(500, { message: 'Description is too long' })
+    .email('Please enter a valid email address'),    
 })
 
 const CompanySignUp = () => {
@@ -119,12 +132,7 @@ const CompanySignUp = () => {
               </label>
               <input
                 type='text'
-                {...register('companyWebsite', {
-                  pattern: {
-                    value: urlPattern,
-                    message: 'Please enter a valid url',
-                  },
-                })}
+                {...register('companyWebsite')}
                 className='input-field'
                 placeholder='company website url'
               />
@@ -141,9 +149,7 @@ const CompanySignUp = () => {
               </label>
               <input
                 type='text'
-                {...register('companyLocation', {
-                  required: 'Company location is required',
-                })}
+                {...register('companyLocation')}
                 className='input-field'
                 placeholder='company location'
               />
@@ -188,14 +194,7 @@ const CompanySignUp = () => {
                 Company description
               </label>
               <textarea
-                {...register('companyDescription', {
-                  required: 'Company description is required',
-                  minLength: { value: 20, message: 'Description is too short' },
-                  maxLength: {
-                    value: 500,
-                    message: 'Description is too long',
-                  },
-                })}
+                {...register('companyDescription')}
                 rows='3'
                 className='input-field'
                 placeholder='company description'
