@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { register as registerUser, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
-import { emailPattern } from '../../constants/pattern'
+// import { emailPattern } from '../../constants/pattern'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
@@ -35,7 +35,6 @@ const Register = ({ setOpenLogin }) => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm({ resolver: zodResolver(schema) })
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(

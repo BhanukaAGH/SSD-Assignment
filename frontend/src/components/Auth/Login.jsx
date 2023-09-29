@@ -5,16 +5,30 @@ import { useNavigate } from 'react-router-dom'
 import { login, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
-import { emailPattern } from '../../constants/pattern'
+// import { emailPattern } from '../../constants/pattern'
 import GoogleLogo from '../../assets/GImage.webp'
 import FacebookLogo from '../../assets/Facebook.webp'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+
+
+const schema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'Please enter a email address' })
+    .email('Please enter a valid email address'),
+  password: z
+    .string()
+    .nonempty({message:'password is required'})
+    .min(6, { message: 'password need to have at least 6 Charters' }),
+})
 
 const Login = ({ setOpenLogin }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm({ resolver: zodResolver(schema) })
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -51,13 +65,7 @@ const Login = ({ setOpenLogin }) => {
             </label>
             <input
               type='text'
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: emailPattern,
-                  message: 'Please enter a valid email address',
-                },
-              })}
+              {...register('email')}
               className='auth-modal-input'
               placeholder='email address'
             />
@@ -74,13 +82,7 @@ const Login = ({ setOpenLogin }) => {
             </label>
             <input
               type='password'
-              {...register('password', {
-                required: 'Password is required',
-                minLength: {
-                  value: 6,
-                  message: 'Password must be at least 6 characters',
-                },
-              })}
+              {...register('password')}
               placeholder='password'
               className='auth-modal-input'
             />
