@@ -7,7 +7,7 @@ import { openAuth } from '../features/ui/uiSlice'
 import { toast } from 'react-toastify'
 import Logo from '../assets/Logo.webp'
 import BGImage from '../assets/registerBg.webp'
-import { urlPattern } from '../constants/pattern'
+// import { urlPattern } from '../constants/pattern'
 import { Oval } from 'react-loader-spinner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -21,6 +21,9 @@ const schema = z.object({
     .string()
     .min(1, { message: 'Please enter a email address' })
     .email('Please enter a valid email address'),
+  numberOfEmployees:z
+    .string()
+    .nonempty({ message: 'Number of Employees is required' }),
   companyWebsite:z
     .string()
     .url('Please enter a valid url')
@@ -32,9 +35,18 @@ const schema = z.object({
     .string()
     .nonempty({message:'Company description is required'})
     .min(20, { message: 'Description need to have at least 20 Charters' })
-    .max(500, { message: 'Description is too long' })
-    .email('Please enter a valid email address'),    
-})
+    .max(500, { message: 'Description is too long' }),
+  password: z
+    .string()
+    .nonempty({message:'password is required'})
+    .min(6, { message: 'password need to have at least 6 Charters' }),
+  confirm_password: z
+    .string()
+    .nonempty({message:'password confirm is required'})
+}).refine((data) => data.password === data.confirm_password, {
+  message: "Password doesn't match",
+  path: ["confirm_password"]
+});
 
 const CompanySignUp = () => {
   const [imageload, setImageLoad] = useState(true)
@@ -43,7 +55,6 @@ const CompanySignUp = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm({ resolver: zodResolver(schema) })
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -212,13 +223,7 @@ const CompanySignUp = () => {
               </label>
               <input
                 type='password'
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
-                  },
-                })}
+                {...register('password')}
                 className='input-field'
                 placeholder='**********'
               />
@@ -235,14 +240,7 @@ const CompanySignUp = () => {
               </label>
               <input
                 type='password'
-                {...register('confirm_password', {
-                  required: 'Confirm password is required',
-                  validate: (val) => {
-                    if (watch('password') !== val) {
-                      return 'Passwords do no match'
-                    }
-                  },
-                })}
+                {...register('confirm_password')}
                 className='input-field'
                 placeholder='**********'
               />

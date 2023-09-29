@@ -5,6 +5,30 @@ import { register as registerUser, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
 import { emailPattern } from '../../constants/pattern'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+
+const schema = z.object({
+  name: z
+    .string()
+    .nonempty({ message: 'Name is required' })
+    .min(3, { message: 'Name must be at least 3 characters' }),
+  email: z
+    .string()
+    .min(1, { message: 'Please enter a email address' })
+    .email('Please enter a valid email address'),
+  password: z
+    .string()
+    .nonempty({message:'password is required'})
+    .min(6, { message: 'password need to have at least 6 Charters' }),
+  confirm_password: z
+    .string()
+    .nonempty({message:'password confirm is required'})
+}).refine((data) => data.password === data.confirm_password, {
+  message: "Password doesn't match",
+  path: ["confirm_password"]
+});
+
 
 const Register = ({ setOpenLogin }) => {
   const {
@@ -12,7 +36,7 @@ const Register = ({ setOpenLogin }) => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm()
+  } = useForm({ resolver: zodResolver(schema) })
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -49,13 +73,7 @@ const Register = ({ setOpenLogin }) => {
             </label>
             <input
               type='text'
-              {...register('name', {
-                required: 'Name is required',
-                minLength: {
-                  value: 3,
-                  message: 'Name must be at least 3 characters',
-                },
-              })}
+              {...register('name')}
               className='auth-modal-input'
               placeholder='name'
             />
@@ -72,13 +90,7 @@ const Register = ({ setOpenLogin }) => {
             </label>
             <input
               type='text'
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: emailPattern,
-                  message: 'Please enter a valid email address',
-                },
-              })}
+              {...register('email')}
               className='auth-modal-input'
               placeholder='email address'
             />
@@ -95,13 +107,7 @@ const Register = ({ setOpenLogin }) => {
             </label>
             <input
               type='password'
-              {...register('password', {
-                required: 'Password is required',
-                minLength: {
-                  value: 6,
-                  message: 'Password must be at least 6 characters',
-                },
-              })}
+              {...register('password')}
               placeholder='password'
               className='auth-modal-input'
             />
@@ -118,14 +124,7 @@ const Register = ({ setOpenLogin }) => {
             </label>
             <input
               type='password'
-              {...register('confirm_password', {
-                required: 'Confirm password is required',
-                validate: (val) => {
-                  if (watch('password') !== val) {
-                    return 'Passwords do no match'
-                  }
-                },
-              })}
+              {...register('confirm_password')}
               placeholder='password'
               className='auth-modal-input'
             />
