@@ -33,7 +33,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5000/api/v1/auth/google/callback',
+      callbackURL: `${process.env.SERVER_URL}/api/v1/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       const currentUser = await User.findOne({ googleId: profile.id })
@@ -59,7 +59,7 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: 'http://localhost:5000/api/v1/auth/facebook/callback',
+      callbackURL: `${process.env.SERVER_URL}/api/v1/auth/facebook/callback`,
     },
     async function (accessToken, refreshToken, profile, done) {
       const currentUser = await User.findOne({ facebookId: profile.id })
