@@ -5,12 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import { login, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
-// import { emailPattern } from '../../constants/pattern'
 import GoogleLogo from '../../assets/GImage.webp'
 import FacebookLogo from '../../assets/Facebook.webp'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-
 
 const schema = z.object({
   email: z
@@ -19,7 +17,7 @@ const schema = z.object({
     .email('Please enter a valid email address'),
   password: z
     .string()
-    .nonempty({message:'password is required'})
+    .nonempty({ message: 'password is required' })
     .min(6, { message: 'password need to have at least 6 Charters' }),
 })
 

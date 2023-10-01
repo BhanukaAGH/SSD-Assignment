@@ -4,31 +4,31 @@ import { useDispatch, useSelector } from 'react-redux'
 import { register as registerUser, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
-// import { emailPattern } from '../../constants/pattern'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
-const schema = z.object({
-  name: z
-    .string()
-    .nonempty({ message: 'Name is required' })
-    .min(3, { message: 'Name must be at least 3 characters' }),
-  email: z
-    .string()
-    .min(1, { message: 'Please enter a email address' })
-    .email('Please enter a valid email address'),
-  password: z
-    .string()
-    .nonempty({message:'password is required'})
-    .min(6, { message: 'password need to have at least 6 Charters' }),
-  confirm_password: z
-    .string()
-    .nonempty({message:'password confirm is required'})
-}).refine((data) => data.password === data.confirm_password, {
-  message: "Password doesn't match",
-  path: ["confirm_password"]
-});
-
+const schema = z
+  .object({
+    name: z
+      .string()
+      .nonempty({ message: 'Name is required' })
+      .min(3, { message: 'Name must be at least 3 characters' }),
+    email: z
+      .string()
+      .min(1, { message: 'Please enter a email address' })
+      .email('Please enter a valid email address'),
+    password: z
+      .string()
+      .nonempty({ message: 'password is required' })
+      .min(6, { message: 'password need to have at least 6 Charters' }),
+    confirm_password: z
+      .string()
+      .nonempty({ message: 'password confirm is required' }),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: "Password doesn't match",
+    path: ['confirm_password'],
+  })
 
 const Register = ({ setOpenLogin }) => {
   const {
