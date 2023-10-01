@@ -24,7 +24,7 @@ router.route('/google/callback').get(
 )
 router.route('/facebook').get(
   passport.authenticate('facebook', {
-    scope: ['profile', 'email'],
+    scope: ['email'],
   })
 )
 
