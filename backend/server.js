@@ -14,6 +14,7 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')
 const passport = require('passport')
 const rateLimiter = require('express-rate-limit')
+const mongoSanitize = require('express-mongo-sanitize')
 
 // database
 const connectDB = require('./db/connect')
@@ -48,6 +49,7 @@ app.use(
   })
 )
 app.use(express.json())
+app.use(mongoSanitize())
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
