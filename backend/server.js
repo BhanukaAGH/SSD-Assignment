@@ -3,6 +3,7 @@ require('express-async-errors')
 require('./utils/passport-config')
 
 const express = require('express')
+const fs = require('fs')
 const app = express()
 
 // rest of the packages
@@ -41,6 +42,11 @@ app.use(
 app.use(helmet())
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }))
 app.use(morgan('tiny'))
+app.use(
+  morgan('combined', {
+    stream: fs.createWriteStream('./logs/access.log', { flags: 'a' }),
+  })
+)
 app.use(express.json())
 app.use(
   session({
