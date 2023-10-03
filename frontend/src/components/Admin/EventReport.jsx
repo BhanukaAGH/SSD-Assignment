@@ -17,7 +17,6 @@ const EventReport = () => {
     setTotal(response.data.totalapplied)
     setReportData(response.data.report)
   }
-  let asc = (a, b) => (a.report.length < b.report.length ? 1 : -1)
 
   useEffect(() => {
     getEventsData()
@@ -72,34 +71,36 @@ const EventReport = () => {
                 </thead>
                 <tbody>
                   {/* render data in ascending order */}
-                  {reportData.sort(asc).map((data) => (
-                    <tr
-                      key={data._id}
-                      className='bg-white border-b border-gray-600'
-                    >
-                      <td className='py-2 text-black px-6'>
-                        {moment(data.createdAt).utc().format('YYYY-MM-DD')}
-                      </td>
-                      <td className='py-2 text-black px-6'>
-                        {moment(data.date).utc().format('YYYY-MM-DD')}
-                      </td>
-                      <td className='py-2 text-black px-6'>
-                        {data.company.name}
-                      </td>
-                      <td className='py-2 text-black px-6'>
-                        {data.eventTitle}
-                      </td>
-                      <td className='py-2 text-black px-6'>
-                        {data.report.length}
-                      </td>
-                      <td className='py-2 text-black px-6'>
-                        {Math.round((data.report.length * 100) / total)}%
-                      </td>
-                      <td className='py-2 text-black px-6'>
-                        {data.deliveryType}
-                      </td>
-                    </tr>
-                  ))}
+                  {reportData
+                    .sort((a, b) => a.report.length - b.report.length)
+                    .map((data) => (
+                      <tr
+                        key={data._id}
+                        className='bg-white border-b border-gray-600'
+                      >
+                        <td className='py-2 text-black px-6'>
+                          {moment(data.createdAt).utc().format('YYYY-MM-DD')}
+                        </td>
+                        <td className='py-2 text-black px-6'>
+                          {moment(data.date).utc().format('YYYY-MM-DD')}
+                        </td>
+                        <td className='py-2 text-black px-6'>
+                          {data.company.name}
+                        </td>
+                        <td className='py-2 text-black px-6'>
+                          {data.eventTitle}
+                        </td>
+                        <td className='py-2 text-black px-6'>
+                          {data.report.length}
+                        </td>
+                        <td className='py-2 text-black px-6'>
+                          {Math.round((data.report.length * 100) / total)}%
+                        </td>
+                        <td className='py-2 text-black px-6'>
+                          {data.deliveryType}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

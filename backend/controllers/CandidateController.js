@@ -37,33 +37,31 @@ const getAllJobs = async (req, res) => {
     if (!Location && !keyword) {
       filter = {}
     }
-    // for search data
-    let locationregex = new RegExp(`.*${Location}.*`, 'i')
-    let keywordregex = new RegExp(`.*${keyword}.*`, 'i')
+
     //searching options
     if (keyword && !Location) {
       filter = {
         $or: [
-          { jobTitle: { $regex: keywordregex } },
-          { jobType: { $regex: keywordregex } },
-          { jobCategory: { $regex: keywordregex } },
+          { jobTitle: { $regex: keyword, $options: 'i' } },
+          { jobType: { $regex: keyword, $options: 'i' } },
+          { jobCategory: { $regex: keyword, $options: 'i' } },
         ],
       }
     }
     if (Location && !keyword) {
       filter = {
-        $or: [{ country: { $regex: locationregex } }],
+        country: { $regex: Location, $options: 'i' },
       }
     }
     if (Location && keyword) {
       filter = {
         $and: [
-          { country: { $regex: locationregex } },
+          { country: { $regex: Location, $options: 'i' } },
           {
             $or: [
-              { jobTitle: { $regex: keywordregex } },
-              { jobType: { $regex: keywordregex } },
-              { jobCategory: { $regex: keywordregex } },
+              { jobTitle: { $regex: keyword, $options: 'i' } },
+              { jobType: { $regex: keyword, $options: 'i' } },
+              { jobCategory: { $regex: keyword, $options: 'i' } },
             ],
           },
         ],
