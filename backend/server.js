@@ -43,11 +43,11 @@ app.use(
 app.use(helmet())
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }))
 app.use(morgan('tiny'))
-app.use(
-  morgan('combined', {
-    stream: fs.createWriteStream('./logs/access.log', { flags: 'a' }),
-  })
-)
+// app.use(
+//   morgan('combined', {
+//     stream: fs.createWriteStream('./logs/access.log', { flags: 'a' }),
+//   })
+// )
 app.use(express.json())
 app.use(mongoSanitize())
 app.use(
